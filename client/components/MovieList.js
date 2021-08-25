@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
+import { Link } from 'react-router';
+import readMovies from '../queries/readMovies';
 
 const MovieList = ({ data }) => {
   console.log(data);
@@ -20,17 +21,14 @@ const MovieList = ({ data }) => {
           ))}
         </ul>
       )}
+      <Link
+        to='/movies/create'
+        className='btn-floating btn-large waves-effect waves-light blue right'
+      >
+        <i className='material-icons'>add</i>
+      </Link>
     </div>
   );
 };
 
-const query = gql`
-  {
-    movies {
-      id
-      title
-    }
-  }
-`;
-
-export default graphql(query)(MovieList);
+export default graphql(readMovies)(MovieList);
