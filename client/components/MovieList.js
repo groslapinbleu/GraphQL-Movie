@@ -1,12 +1,28 @@
 import React, { useContext } from 'react';
-import { graphql } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 import { Link } from 'react-router';
+import deleteMovie from '../queries/deleteMovie';
 import readMovies from '../queries/readMovies';
 
-const MovieList = ({ data }) => {
-  console.log(data);
-  const movies = data.movies;
-  const loading = data.loading;
+const MovieList = ({ readMovies, deleteMovie }) => {
+  const movies = readMovies.movies;
+  const loading = readMovies.loading;
+
+  const onDeleteMovie = (id) => {
+    console.log('deleteMovie with id=' + id);
+    deleteMovie({
+      variables: {
+        id,
+      },
+    })
+      .then(() => {
+        readMovies.refetch();
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+
   return (
     <div>
       <h1>Collection de films</h1>
@@ -17,6 +33,14 @@ const MovieList = ({ data }) => {
           {movies.map((movie) => (
             <li className='collection-item' key={movie.id}>
               {movie.title}
+              <i
+                className='material-icons secondary-content delete_button'
+                onClick={() => {
+                  onDeleteMovie(movie.id);
+                }}
+              >
+                delete
+              </i>
             </li>
           ))}
         </ul>
@@ -31,4 +55,11 @@ const MovieList = ({ data }) => {
   );
 };
 
-export default graphql(readMovies)(MovieList);
+export default compose(
+  graphql(readMovies, {
+    name: 'readMovies',
+  }),
+  graphql(deleteMovie, {
+    name: 'deleteMovie',
+  })
+)(MovieList);

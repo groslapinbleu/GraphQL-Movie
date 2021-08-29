@@ -1,6 +1,7 @@
 # Graphql-Movie-Starter
 
 Petit projet utilisant GraphQL et REACT, tiré de la formation <https://www.udemy.com/course/graphql-react-js-pour-debutants/>
+La base de donnée utilisée est Atlas (Mongodb).
 
 ## Pour lancer
 
