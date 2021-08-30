@@ -6,7 +6,7 @@ import { hashHistory } from 'react-router';
 class MovieCreate extends Component {
   constructor(props) {
     super(props);
-    this.state = { title: '' };
+    this.state = { title: '', errors: [] };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -18,10 +18,14 @@ class MovieCreate extends Component {
         variables: {
           title: this.state.title,
         },
-        refetchQueries: [{ query: readMovies }], // force la réexécutin de readMovies
+        refetchQueries: [{ query: readMovies }], // force la réexécution de readMovies
       })
       .then(() => {
         hashHistory.push('/');
+      })
+      .catch((e) => {
+        const errorMessages = e.graphQLErrors.map((error) => error.message);
+        this.setState({ errors: errorMessages });
       });
   }
   handleChange(event) {
@@ -46,6 +50,7 @@ class MovieCreate extends Component {
             <input type='submit' value='Envoyer' />
           </div>
         </form>
+        <div className='row errors'>{this.state.errors.map((e) => e)}</div>
       </div>
     );
   }
