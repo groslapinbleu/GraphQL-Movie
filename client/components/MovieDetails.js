@@ -20,8 +20,18 @@ const MovieDetails = (props) => {
     }
     return ret;
   };
-  const onClickThumb = (id) => {
-    props.likeReview({ variables: { id } });
+  const onClickThumb = (id, currentLikes) => {
+    props.likeReview({
+      variables: { id },
+      optimisticResponse: {
+        __typename: 'Mutation',
+        likeReview: {
+          id: id,
+          __typename: 'ReviewType',
+          likes: currentLikes + 1,
+        },
+      },
+    });
   };
   return (
     <div>
@@ -39,7 +49,7 @@ const MovieDetails = (props) => {
                 <i
                   className='material-icons secondary-content cursor_on_button'
                   onClick={() => {
-                    onClickThumb(review.id);
+                    onClickThumb(review.id, review.likes);
                   }}
                 >
                   thumb_up
