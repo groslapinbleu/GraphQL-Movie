@@ -5,6 +5,10 @@ const readMovie = gql`
     movie(id: $id) {
       id
       title
+      reviews {
+        id
+        content
+      }
     }
   }
 `;

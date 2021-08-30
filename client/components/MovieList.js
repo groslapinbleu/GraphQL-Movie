@@ -3,7 +3,6 @@ import { graphql, compose } from 'react-apollo';
 import { Link } from 'react-router';
 import deleteMovie from '../queries/deleteMovie';
 import readMovies from '../queries/readMovies';
-import { hashHistory } from 'react-router';
 
 const MovieList = ({ readMovies, deleteMovie }) => {
   const movies = readMovies.movies;
@@ -23,9 +22,6 @@ const MovieList = ({ readMovies, deleteMovie }) => {
         console.log(e);
       });
   };
-  const onClickMovie = (id) => {
-    hashHistory.push(`/movie/${id}`);
-  };
 
   return (
     <div>
@@ -35,12 +31,8 @@ const MovieList = ({ readMovies, deleteMovie }) => {
       ) : (
         <ul className='collection'>
           {movies.map((movie) => (
-            <li
-              className='collection-item'
-              key={movie.id}
-              onClick={() => onClickMovie(movie.id)}
-            >
-              {movie.title}
+            <li className='collection-item' key={movie.id}>
+              <Link to={`/movie/${movie.id}`}>{movie.title}</Link>
               <i
                 className='material-icons secondary-content delete_button'
                 onClick={() => {
