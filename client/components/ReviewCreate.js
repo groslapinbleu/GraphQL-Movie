@@ -19,14 +19,14 @@ class ReviewCreate extends Component {
           movieId: this.props.movieId,
           content: this.state.content,
         },
-        refetchQueries: [
-          {
-            query: readMovie,
-            variables: {
-              id: this.props.movieId,
-            },
-          },
-        ], // force la réexécution de readMovie
+        // refetchQueries: [
+        //   {
+        //     query: readMovie,
+        //     variables: {
+        //       id: this.props.movieId,
+        //     },
+        //   },
+        // ], // force la réexécution de readMovie
       })
       .then(() => {
         this.setState({ content: '' });

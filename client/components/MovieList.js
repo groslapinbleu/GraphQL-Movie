@@ -34,7 +34,7 @@ const MovieList = ({ readMovies, deleteMovie }) => {
             <li className='collection-item' key={movie.id}>
               <Link to={`/movie/${movie.id}`}>{movie.title}</Link>
               <i
-                className='material-icons secondary-content delete_button'
+                className='material-icons secondary-content cursor_on_button'
                 onClick={() => {
                   onDeleteMovie(movie.id);
                 }}

@@ -8,6 +8,7 @@ const readMovie = gql`
       reviews {
         id
         content
+        likes
       }
     }
   }

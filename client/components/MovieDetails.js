@@ -2,12 +2,27 @@ import React from 'react';
 import { graphql, compose } from 'react-apollo';
 import readMovie from '../queries/readMovie';
 import { Link } from 'react-router';
+import likeReview from '../queries/likeReview';
 import ReviewCreate from './ReviewCreate';
 
 const MovieDetails = (props) => {
   console.log(props);
   const id = props.params.id;
   const readMovieData = props.readMovie; // j'utilise un autre nom que readMovie sinon javascript se mélange avec la query graphQL nommée readMovie
+  const stars = (likes) => {
+    const ret = [];
+    for (let i = 0; i < likes; i++) {
+      ret.push(
+        <i className='material-icons secondary-content' key={i}>
+          star
+        </i>
+      );
+    }
+    return ret;
+  };
+  const onClickThumb = (id) => {
+    props.likeReview({ variables: { id } });
+  };
   return (
     <div>
       MovieDetails {id}
@@ -21,6 +36,17 @@ const MovieDetails = (props) => {
             {readMovieData.movie.reviews.map((review) => (
               <li className='collection-item' key={review.id}>
                 {review.content}
+                <i
+                  className='material-icons secondary-content cursor_on_button'
+                  onClick={() => {
+                    onClickThumb(review.id);
+                  }}
+                >
+                  thumb_up
+                </i>
+                {stars(review.likes).map((star) => {
+                  return star;
+                })}
               </li>
             ))}
           </ul>
@@ -41,5 +67,8 @@ export default compose(
         },
       };
     },
+  }),
+  graphql(likeReview, {
+    name: 'likeReview',
   })
 )(MovieDetails);
